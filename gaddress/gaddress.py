@@ -1,7 +1,6 @@
 import re
 import requests
 from urllib.parse import quote_plus as url_encode
-from bs4 import BeautifulSoup
 
 def decode_html(string):
     decoded = ['>', '<', '"', '&', '\'','{', '}']
