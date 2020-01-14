@@ -10,8 +10,8 @@ def decode_html(string):
         string = string.replace(e, d)
     return string
 
-def geoaddress(query, country=''):
-    map_url = 'https://www.lyft.com/api/geocod?address={}+{}'
+def geoaddress(query, country='', proxies=None):
+    map_url = 'https://www.lyft.com/api/geocode?address={}+{}'
     headers = { 'Content-Type': 'text/html; charset=utf-8',
     'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.64 Safari/537.11',
     'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
@@ -26,13 +26,13 @@ def geoaddress(query, country=''):
     if response.status_code == 200:
         try:
             record = json.loads(response.content)
-            data = {'display_address': record['display_address'],
+            return {'display_address': record['display_address'],
                     'latitude': record.get('lat',''), 'longitude': record.get('lng',''),
                     'place_id':record.get('place_id',''), 'place_type': record.get('place_type',''),
-                    'formated_address': record.get('routable_address'), 'error_flag': False}
-            print(data)
+                    'formated_address': record.get('routable_address'), 'error_flag': False }
         except Exception as e:
             return {'error_flag': True, 'Error': 'Interface Error with {}'.format(e)}
     else:
         return {'error_flag': True, 'Error': 'Interface Error with http code {}'.format(response.status_code)}
+
 
